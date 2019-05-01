@@ -27,19 +27,20 @@ Nowadays it is possible to simulate crossing, mutation, neutralization, predatio
  By the time the robots and the map used were acquired by the package turtlebot3 for gazebo.
 
  <p align="center">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/Turtlebot3.png" height="200">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/InitialSpawnSimulation.png" height="200>
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/Turtlebot3.png" height="300">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/InitialSpawnSimulation.png" height="300>
 </p>
 
 ### Matlab App
 The Matlab App communicates with the *robot_obst_avoid* ROS node to set the robots proprieties and control the simulation environment.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/MatlabApp1.png" height="500>>
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/MatlabApp1.png" height="800>
 </p>
 
-##### Graphs
+#### Graphs
 The **Current Robot Fitness** graph shows the fitness of each robot per generation.
+
 <p align="center">
  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/CurrentRobotFitnessGraph.png">
 </p>
@@ -60,12 +61,22 @@ The other 6 graphs shows the current value of each gene on each robot per genera
   <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorAngleGraphs.png">
  </p>
 
-##### Setting Fixed Genes
+#### Setting Fixed Genes
 
-##### Selection of Types of Pressure
+It is possible to set a fixed value to some genes. When this occur, this gene in the chromosome of each robot changes to the desired value. This makes possible the evolution of the genes of each robot in different time.
 
-##### Selection of Types of Diversity
+#### Selection of Types of Pressure
 
-##### Simulation Connection
+**Back mutation prevention:** After one gene suffer mutation, it can mutate again only if all other genes also suffered mutation).
 
-##### Save Images and PDFs
+**Predation:** Every X generation, the robot with the least average fitness is killed by the predator (all the genes are set as random).
+
+#### Selection of Types of Diversity
+
+**Mutation:**
+**Neutralization:**
+**Crossing:**
+
+#### Simulation Connection
+
+#### Save Images and PDFs
