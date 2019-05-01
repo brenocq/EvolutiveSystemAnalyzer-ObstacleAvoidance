@@ -27,15 +27,15 @@ Nowadays it is possible to simulate crossing, mutation, neutralization, predatio
  By the time the robots and the map used were acquired by the package turtlebot3 for gazebo.
 
  <p align="center">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/Turtlebot3.png">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/InitialSpawnSimulation.png">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/Turtlebot3.png" height="200">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/InitialSpawnSimulation.png" height="200>
 </p>
 
 ### Matlab App
 The Matlab App communicates with the *robot_obst_avoid* ROS node to set the robots proprieties and control the simulation environment.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/MatlabApp1.png">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/MatlabApp1.png" height="500>>
 </p>
 
 ##### Graphs
