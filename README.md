@@ -52,12 +52,13 @@ The **Average Robot Fitness** graph shows the average of the last 5 fitness of e
 
 The other 6 graphs shows the current value of each gene on each robot per generation. (There are two graphs for the sensor angle gene).
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorActivationGraph.png">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/LinearVelocityGraph.png">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/RotationTimeGraph.png">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorActivationGraph.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/LinearVelocityGraph.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/RotationTimeGraph.png" height="150">
  </p>
+
  <p align="center">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/AngularVelocityGraph.png">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/AngularVelocityGraph.png" height="150">
   <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorAngleGraphs.png">
  </p>
 
@@ -91,6 +92,52 @@ There are two ways to save the data. The first one is to select one of the graph
 
 ## How to Install
 
-First,
+First, make sure that you have the **turtlebot3 package** for ROS on your ROS workspace and the Matlab Robotics System Toolbox correctly setted to use ROS and Matlab.
+
+After this, go to your workspace and clone the ROS package folder in this repository using the lines above on terminal:
+```
+$ cd ~/catkin_ws/src
+$ svn export
+https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance.git/trunk/obstacle_avoidance_simulation
+```
+After this, build again your ROS workspace:
+```
+$ cd ~/catkin_ws
+$ catkin_make
+```
+
+If everything is fine until here, go to the folder where you store your matlab files and use:
+```
+$ svn export https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance.git/trunk/MatlabApp
+```
+
+Now you have the ROS package and Matlab App installed. It is still necessary to create the new types of messages for ROS on Matlab. To do this, first it is good to delete a folder inside the `obstacle_avoidance_simulation` ROS package.
+```
+$ rm -r ~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/matlab_gen
+```
+After this, go to Matlab, write the line above and follow the instruction that will appear:
+```
+> rosgenmsg('~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
+```
 
 ## How to Run
+
+First you need the ROS master to be running. Run on your teminal:
+```
+$ roscore
+```
+
+Now, open another terminal and use roslaunch to initialize the ROS world:
+```
+$ roslaunch obstacle_avoidance_simulation main.launch
+```
+After this, go to another terminal and use rosrun to create the ros node:
+```
+$ rosrun obstacle_avoidance_simulation robot_obstacle_avoidance_node
+
+```
+
+Now everything on the simulation is working. Everything is stopped because them are waiting commands from the Matlab App.
+On matlab, open `EvolutiveSysAnalyze.mlapp` and execute the App (make sure your ipv4 is defined correctly).
+
+Right, now just set the switch stop/start as start and the plots will be updated at the end of each population.
