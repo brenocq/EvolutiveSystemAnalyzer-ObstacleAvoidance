@@ -12,10 +12,10 @@ using namespace std;
 
 #define PI 3.14159265
 #define NumRobots 6
-#define PopulationTestTime 30 //set the time in seconds that each population will run
-#define InitialFitness 1000
-#define WalkingPoints 100
-#define CollisionPoints -30
+#define PopulationTestTime 60 //set the time in seconds that each population will run
+#define InitialFitness 0
+#define WalkingPoints 100 // Maximum number of points that a robots can receive in a second (walking with 1m/s)
+#define CollisionPoints -50
 //----- On/Off Debug (output) -----//
 #define ChromosomeDebug 1
 #define FitnessEndCycle 1
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
         loop_rate.sleep();
         controlLoop();
 
-        if(int(ros::Time::now().toSec())>=(lastUpdateFitness+1)){//Update each 3 seconds
+        if(int(ros::Time::now().toSec())>=(lastUpdateFitness+1)){//Update each 1 second
           cout<<"UpdateFitness"<<endl;
           lastUpdateFitness=int(ros::Time::now().toSec());
           updateFitness();
@@ -204,7 +204,9 @@ int main(int argc, char **argv) {
           std_srvs::Empty srv;
           resetSimulation.call(srv);
           populationNumber++;
-
+          for (int i = 1; i <=NumRobots; i++) {
+                stopRotation[i]=0;
+          }
           {
             float initialPositions[NumRobots+1][2];
             float initialAngle[NumRobots+1];
@@ -287,24 +289,30 @@ int main(int argc, char **argv) {
 void controlLoop(){
 
   for (int i = 1; i <= NumRobots; i++){
-    move(chromosome[i][1],i);
+    //printf("Robot %d: time: %lf rotation: %lf\n",i,ros::Time::now().toSec(),stopRotation[i]);
+    if(ros::Time::now().toSec()>stopRotation[i]){
+      if(laser1BitData[i][0]){
+        stopRotation[i]=(double)ros::Time::now().toSec()+chromosome[i][3];
+        dirRotation[i]=false;
+        //cout<<"Robot"<<i<<" stopRotation: "<<stopRotation[i]<<" Time now: "<< (double)ros::Time::now().toSec() <<endl;
+        rotate(degree2radians(chromosome[i][2]), dirRotation[i], i);
+      }
+      else if(laser1BitData[i][1]){
+          stopRotation[i]=(double)ros::Time::now().toSec()+chromosome[i][3];
+          dirRotation[i]=true;
+          //cout<<"Robot"<<i<<" stopRotation: "<<stopRotation[i]<<" Time now: "<< ros::Time::now().toSec() <<endl;
+          rotate(degree2radians(chromosome[i][2]), dirRotation[i], i);
+      }else if(laser1BitData[i][2]){
+          stopRotation[i]=(double)ros::Time::now().toSec()+chromosome[i][3];
+          dirRotation[i]=true;
+          //cout<<"Robot"<<i<<" stopRotation: "<<stopRotation[i]<<" Time now: "<< (double)ros::Time::now().toSec() <<endl;
+          rotate(degree2radians(chromosome[i][2]), dirRotation[i], i);
+      }else{
+        move(chromosome[i][1],i);
+      }
 
-    if(laser1BitData[i][0]){
-      stopRotation[i]=ros::Time::now().toSec()+chromosome[i][3];
-      dirRotation[i]=true;
     }
-    if(laser1BitData[i][2]){
-      stopRotation[i]=ros::Time::now().toSec()+chromosome[i][3];
-      dirRotation[i]=false;
-    }
-    if(laser1BitData[i][1]){
-      stopRotation[i]=ros::Time::now().toSec()+chromosome[i][3];
-      dirRotation[i]=false;
-    }
-
-    rotate(degree2radians(chromosome[i][2]), dirRotation[i], i);
   }
-
 }
 void move(double speed, int robotNumber){
     geometry_msgs::Twist vel_msg;
@@ -353,7 +361,7 @@ void laserCallBack(const sensor_msgs::LaserScan::ConstPtr &msg){
   const int delta = 5; //Number of degrees to each sensor
   float process[delta]; //Data from each degree
   int robotNumber = msg->header.frame_id[5]-'0';// msg->header.frame_id == "robotX_tf/base_scan"
-  uint16_t laserAngle[3] = {chromosome[robotNumber][5], 0, 360-chromosome[robotNumber][5]};
+  uint16_t laserAngle[3] = {chromosome[robotNumber][4], 0, 360-chromosome[robotNumber][4]};
 
   if(LaserDebug){
   cout<<"---Laser Data ("<<robotNumber<<")---"<<endl;
@@ -528,6 +536,7 @@ void generateNewPopulation(){
   }
 
   for (size_t i = 1; i <= NumRobots; i++) {
+
     averageFitness[i]=0;
     for (size_t j = 0; j < 5; j++) {
       averageFitness[i]+=fitness[i][j];

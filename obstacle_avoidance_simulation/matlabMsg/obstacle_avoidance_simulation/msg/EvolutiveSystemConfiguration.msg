@@ -1,3 +1,4 @@
+# Run this in matlab to create this message: rosgenmsg('/home/breno/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
 # Fixed Genes
 float32 SensorActivation
 float32 LinearVelocity

@@ -6,9 +6,9 @@ classdef CustomMsgConsts
     %   Copyright 2014-2019 The MathWorks, Inc.
     
     properties (Constant)
-        turtlebot3_test_obst_avoid_ControlSimulation = 'turtlebot3_test_obst_avoid/ControlSimulation'
-        turtlebot3_test_obst_avoid_EvolutiveSystemConfiguration = 'turtlebot3_test_obst_avoid/EvolutiveSystemConfiguration'
-        turtlebot3_test_obst_avoid_RobotInfo = 'turtlebot3_test_obst_avoid/RobotInfo'
+        obstacle_avoidance_simulation_ControlSimulation = 'obstacle_avoidance_simulation/ControlSimulation'
+        obstacle_avoidance_simulation_EvolutiveSystemConfiguration = 'obstacle_avoidance_simulation/EvolutiveSystemConfiguration'
+        obstacle_avoidance_simulation_RobotInfo = 'obstacle_avoidance_simulation/RobotInfo'
     end
     
     methods (Static, Hidden)
@@ -19,9 +19,9 @@ classdef CustomMsgConsts
             persistent msgList
             if isempty(msgList)
                 msgList = cell(3, 1);
-                msgList{1} = 'turtlebot3_test_obst_avoid/ControlSimulation';
-                msgList{2} = 'turtlebot3_test_obst_avoid/EvolutiveSystemConfiguration';
-                msgList{3} = 'turtlebot3_test_obst_avoid/RobotInfo';
+                msgList{1} = 'obstacle_avoidance_simulation/ControlSimulation';
+                msgList{2} = 'obstacle_avoidance_simulation/EvolutiveSystemConfiguration';
+                msgList{3} = 'obstacle_avoidance_simulation/RobotInfo';
             end
             
             messageList = msgList;

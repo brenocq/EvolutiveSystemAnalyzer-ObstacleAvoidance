@@ -8,5 +8,5 @@
     
     <!-- Add the packages you want to build on the following lines -->
     <!-- e.g. <build_depend>std_msgs</build_depend> -->
-<build_depend>turtlebot3_test_obst_avoid</build_depend>
+<build_depend>obstacle_avoidance_simulation</build_depend>
 </package>

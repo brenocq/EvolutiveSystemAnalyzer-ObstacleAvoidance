@@ -1,5 +1,5 @@
+# Run this in matlab to create this message: rosgenmsg('/home/breno/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
 # Robot Information
-# rosgenmsg('/home/breno/catkin_ws/src/turtlebot3_test_obst_avoid/matlabMsg/')
 int32[] RobotNumber
 int32[] Fitness
 int32 Generation
