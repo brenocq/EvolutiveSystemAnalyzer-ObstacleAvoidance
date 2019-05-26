@@ -12,7 +12,7 @@ using namespace std;
 
 #define PI 3.14159265
 #define NumRobots 6
-#define PopulationTestTime 60 //set the time in seconds that each population will run
+#define PopulationTestTime 120 //set the time in seconds that each population will run
 #define InitialFitness 0
 #define WalkingPoints 100 // Maximum number of points that a robots can receive in a second (walking with 1m/s)
 #define CollisionPoints -50
@@ -500,6 +500,8 @@ void updateFitness(){
     if(inCollision[i]==true){
       fitness[i][4]+=CollisionPoints; //points = CollisionPoints
     }
+    fitness[i][4]<=-2000?fitness[i][4]=-2000:fitness[i][4];
+
     if(FitnessFollowDebug){
       cout<<"\t"<<"Robot"<<i<<": ";
       for (size_t j = 0; j < 5; j++) {
