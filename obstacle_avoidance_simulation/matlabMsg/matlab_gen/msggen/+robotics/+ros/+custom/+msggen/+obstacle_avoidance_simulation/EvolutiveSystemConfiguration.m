@@ -12,7 +12,7 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = 'e5487a10374b1974eaaba43f8d80fdec' % The MD5 Checksum of the message definition
+        MD5Checksum = '3cbd47186792276cbfb284bbf0d17e54' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
@@ -30,11 +30,13 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
         Mutation
         Neutralization
         Crossing
+        GenMeanFit
+        QtBestRobot
     end
     
     properties (Constant, Hidden)
-        PropertyList = {'AngularVelocity', 'BackMutationPrevention', 'Crossing', 'LinearVelocity', 'Mutation', 'Neutralization', 'Predation', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant message properties
-        ROSPropertyList = {'AngularVelocity', 'BackMutationPrevention', 'Crossing', 'LinearVelocity', 'Mutation', 'Neutralization', 'Predation', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant ROS message properties
+        PropertyList = {'AngularVelocity', 'BackMutationPrevention', 'Crossing', 'GenMeanFit', 'LinearVelocity', 'Mutation', 'Neutralization', 'Predation', 'QtBestRobot', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant message properties
+        ROSPropertyList = {'AngularVelocity', 'BackMutationPrevention', 'Crossing', 'GenMeanFit', 'LinearVelocity', 'Mutation', 'Neutralization', 'Predation', 'QtBestRobot', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant ROS message properties
     end
     
     methods
@@ -202,6 +204,30 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
             
             obj.JavaMessage.setCrossing(crossing);
         end
+        
+        function genmeanfit = get.GenMeanFit(obj)
+            %get.GenMeanFit Get the value for property GenMeanFit
+            genmeanfit = int32(obj.JavaMessage.getGenMeanFit);
+        end
+        
+        function set.GenMeanFit(obj, genmeanfit)
+            %set.GenMeanFit Set the value for property GenMeanFit
+            validateattributes(genmeanfit, {'numeric'}, {'nonempty', 'scalar'}, 'EvolutiveSystemConfiguration', 'GenMeanFit');
+            
+            obj.JavaMessage.setGenMeanFit(genmeanfit);
+        end
+        
+        function qtbestrobot = get.QtBestRobot(obj)
+            %get.QtBestRobot Get the value for property QtBestRobot
+            qtbestrobot = int32(obj.JavaMessage.getQtBestRobot);
+        end
+        
+        function set.QtBestRobot(obj, qtbestrobot)
+            %set.QtBestRobot Set the value for property QtBestRobot
+            validateattributes(qtbestrobot, {'numeric'}, {'nonempty', 'scalar'}, 'EvolutiveSystemConfiguration', 'QtBestRobot');
+            
+            obj.JavaMessage.setQtBestRobot(qtbestrobot);
+        end
     end
     
     methods (Access = protected)
@@ -225,6 +251,8 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
             cpObj.Mutation = obj.Mutation;
             cpObj.Neutralization = obj.Neutralization;
             cpObj.Crossing = obj.Crossing;
+            cpObj.GenMeanFit = obj.GenMeanFit;
+            cpObj.QtBestRobot = obj.QtBestRobot;
         end
         
         function reload(obj, strObj)
@@ -239,6 +267,8 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
             obj.Mutation = strObj.Mutation;
             obj.Neutralization = strObj.Neutralization;
             obj.Crossing = strObj.Crossing;
+            obj.GenMeanFit = strObj.GenMeanFit;
+            obj.QtBestRobot = strObj.QtBestRobot;
         end
     end
     
@@ -262,6 +292,8 @@ classdef EvolutiveSystemConfiguration < robotics.ros.Message
             strObj.Mutation = obj.Mutation;
             strObj.Neutralization = obj.Neutralization;
             strObj.Crossing = obj.Crossing;
+            strObj.GenMeanFit = obj.GenMeanFit;
+            strObj.QtBestRobot = obj.QtBestRobot;
         end
     end
     

@@ -1,4 +1,4 @@
-# Run this in matlab to create this message: rosgenmsg('/home/breno/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
+# Run this in matlab to create this message: rosgenmsg('~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
 # Fixed Genes
 float32 SensorActivation
 float32 LinearVelocity
@@ -14,3 +14,7 @@ int32 Predation
 float32 Mutation
 float32 Neutralization
 bool Crossing
+
+# Evolutionary Parameters
+int32 GenMeanFit
+int32 QtBestRobot

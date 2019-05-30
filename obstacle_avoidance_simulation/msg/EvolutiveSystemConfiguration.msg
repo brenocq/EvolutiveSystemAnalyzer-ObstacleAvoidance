@@ -13,3 +13,7 @@ int32 Predation
 float32 Mutation
 float32 Neutralization
 bool Crossing
+
+# Evolutionary Parameters
+int32 GenMeanFit
+int32 QtBestRobot

@@ -1,4 +1,4 @@
-# Run this in matlab to create this message: rosgenmsg('/home/breno/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
+# Run this in matlab to create this message: rosgenmsg('~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
 # Robot Information
 int32[] RobotNumber
 int32[] Fitness
