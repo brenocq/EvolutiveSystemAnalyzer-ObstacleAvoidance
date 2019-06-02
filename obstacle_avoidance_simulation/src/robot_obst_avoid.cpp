@@ -8,6 +8,8 @@
 #include "obstacle_avoidance_simulation/EvolutiveSystemConfiguration.h"
 #include <sstream>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 #define PI 3.14159265
@@ -40,6 +42,9 @@ int ControlPredation = 10;
 float ControlMutation = 10;
 float ControlNeutralization = 50;
 bool ControlCrossing = 1;
+// Evolutionary Parameters
+int GenMeanFit = 7;
+int QtBestRobot = 3;
 
 //----- Create Publishers and Subscribers -----//
 ros::Publisher velocity_publisher[NumRobots+1];//{0, robot1, robot2}
@@ -64,7 +69,8 @@ bool BMP[NumRobots+1][5];
 //----- Evolutive System variables -----//
 int populationNumber=1;
 double chromosome[NumRobots+1][5];// {sensorActivation, vel_linear, vel_angular, time_rotation, sensor_angle}
-int fitness[NumRobots+1][5];
+int fitness[NumRobots+1][50];// TODO dynamic allocation
+int averageFitness[NumRobots+1];
 //--- Used to ajust the fitness ---//
 bool inCollision[NumRobots+1];
 bool walking[NumRobots+1];
@@ -94,6 +100,7 @@ void randomPositions();
 
 //----- MAIN -----//
 int main(int argc, char **argv) {
+  srand (time(NULL));
     ros::init(argc, argv, "robot_obst_avoid");
     ros::NodeHandle n;
 
@@ -135,6 +142,7 @@ int main(int argc, char **argv) {
     //randomPositions();
     while (ros::ok())
     {
+
       if(updateStatus){
         updateStatus=false;
         std_srvs::Empty srv;
@@ -184,11 +192,9 @@ int main(int argc, char **argv) {
       gazebo_msgs::SetModelState setmodelstate;
       setmodelstate.request.model_state = modelstate;
       change_robot_position.call(setmodelstate);*/
-
       if(SimulationStatus==1){
         loop_rate.sleep();
         controlLoop();
-
         if(int(ros::Time::now().toSec())>=(lastUpdateFitness+1)){//Update each 1 second
           cout<<"UpdateFitness"<<endl;
           lastUpdateFitness=int(ros::Time::now().toSec());
@@ -197,10 +203,8 @@ int main(int argc, char **argv) {
 
         if(endPopulationTime()){
           publishInfo();
-
           generateNewPopulation();
           resetFitness();
-
           std_srvs::Empty srv;
           resetSimulation.call(srv);
           populationNumber++;
@@ -217,7 +221,6 @@ int main(int argc, char **argv) {
             cout<<endl<<"Initial Positions:"<<endl;
 
             for(int i = 1; i <= NumRobots; i++){//Generate random positions and angles
-
                 newPosition:
                 initialPositions[i][0]=possiblePositionsXY[rand()%spawnPoints];
                 initialPositions[i][1]=possiblePositionsXY[rand()%spawnPoints];
@@ -230,7 +233,6 @@ int main(int argc, char **argv) {
                 initialAngle[i]=float(rand()%360)/180*PI;
 
             }
-
 
             for (int i = 1; i <= NumRobots; i++) {
               geometry_msgs::Pose start_pose;
@@ -249,7 +251,6 @@ int main(int argc, char **argv) {
               start_twist.angular.x = 0.0;
               start_twist.angular.y = 0.0;
               start_twist.angular.z = initialAngle[i];
-
               gazebo_msgs::ModelState modelstate;
               string robotName;
               if(i<10){
@@ -271,7 +272,6 @@ int main(int argc, char **argv) {
               gazebo_msgs::SetModelState setmodelstate;
               setmodelstate.request.model_state = modelstate;
               change_robot_position.call(setmodelstate);
-
             }
           }
 
@@ -435,6 +435,22 @@ void evolutiveConfigCallBack(const obstacle_avoidance_simulation::EvolutiveSyste
   ControlMutation = msg->Mutation;;
   ControlNeutralization = msg->Neutralization;
   ControlCrossing = msg->Crossing;
+  // Types of Diversity
+  QtBestRobot = msg->QtBestRobot;
+
+  int lastGenMean=GenMeanFit;
+  GenMeanFit = msg->GenMeanFit;
+  for (int i = 1; i <= NumRobots; i++) {
+    if(GenMeanFit>lastGenMean){
+      for (int j = GenMeanFit-1; j > 0; j--) {
+          fitness[i][j] = fitness[i][ j-(GenMeanFit-lastGenMean) ];
+      }
+    }else{
+      for (int j = 0; j < GenMeanFit; j++) {
+          fitness[i][j] = fitness[i][ j+(lastGenMean-GenMeanFit)];
+      }
+    }
+  }
 }
 void controlSimulationCallBack(const obstacle_avoidance_simulation::ControlSimulation::ConstPtr &msg){
   SimulationStatus=msg->SimulationState;
@@ -468,7 +484,7 @@ void initiatePopulation(){
 
 void resetFitness(){
   for (int i = 1; i <= NumRobots; i++)
-    fitness[i][4]=InitialFitness;
+    fitness[i][GenMeanFit-1]=InitialFitness;
 }
 
 void updateFitness(){
@@ -492,19 +508,17 @@ void updateFitness(){
     }
     cout<<"]"<<endl;
   }
-
   for (int i = 1; i <= NumRobots; i++) {
     if(walking[i]==true && inCollision[i]==false){//o robô andava mesmo colidindo e estava ganhando muitos pontos com isso
-      fitness[i][4]+=chromosome[i][1]*WalkingPoints; //points = vel_linear*WalkingPoints
+      fitness[i][GenMeanFit-1]+=chromosome[i][1]*WalkingPoints; //points = vel_linear*WalkingPoints
     }
     if(inCollision[i]==true){
-      fitness[i][4]+=CollisionPoints; //points = CollisionPoints
+      fitness[i][GenMeanFit-1]+=CollisionPoints; //points = CollisionPoints
     }
-    fitness[i][4]<=-2000?fitness[i][4]=-2000:fitness[i][4];
-
+    fitness[i][GenMeanFit-1]<=-2000?fitness[i][GenMeanFit-1]=-2000:fitness[i][GenMeanFit-1];
     if(FitnessFollowDebug){
       cout<<"\t"<<"Robot"<<i<<": ";
-      for (size_t j = 0; j < 5; j++) {
+      for (size_t j = 0; j < GenMeanFit; j++) {
           cout<<fitness[i][j]<<" ";
       }
       cout<<endl;
@@ -527,9 +541,8 @@ bool endPopulationTime(){
 }
 
 void generateNewPopulation(){
-  int bestRobot=0, bestRobotFitness=0, totalFitness=0;
-  int averageFitness[NumRobots+1];
-
+  int bestRobot, bestRobotFitness=0, totalFitness=0;
+  vector< pair <int,int> >bestRobots;//first:fitness second:robotNumber
   char showMutation[NumRobots+1][18];
   for(int i = 1; i <= NumRobots; i++){
     for (size_t j = 0; j < 4; j++) {
@@ -537,27 +550,29 @@ void generateNewPopulation(){
     }
   }
 
+  //----- Calculate Average Fitness -----//
   for (size_t i = 1; i <= NumRobots; i++) {
-
     averageFitness[i]=0;
-    for (size_t j = 0; j < 5; j++) {
+    for (size_t j = 0; j < GenMeanFit; j++) {
       averageFitness[i]+=fitness[i][j];
     }
-    if(populationNumber>=5){
-      averageFitness[i]/=5;
+    if(populationNumber>=GenMeanFit){
+      averageFitness[i]/=GenMeanFit;
     }else{
       averageFitness[i]/=populationNumber;
     }
   }
-
+  //----- Select Best Robot -----//
   for (int i = 1; i <= NumRobots; i++){
-    if(averageFitness[i]>bestRobotFitness){
-      bestRobot=i;
-      bestRobotFitness=averageFitness[i];
-    }
-    totalFitness+=fitness[i][4];
+    bestRobots.push_back(make_pair(fitness[i][GenMeanFit-1],i));
+    totalFitness+=fitness[i][GenMeanFit-1];
   }
+  sort(bestRobots.rbegin(),bestRobots.rend());
 
+  int randNum = rand()%QtBestRobot;
+  bestRobot = bestRobots[randNum].second;
+  bestRobotFitness = bestRobots[randNum].first;
+  //----- Print population data -----//
   if(FitnessEndCycle){
     cout<<endl<<"Fitness Population End Cycle:"<<endl;
     cout<<"\tMaximum Fitness: "<<InitialFitness+(PopulationTestTime)*WalkingPoints*0.5<<endl;
@@ -568,7 +583,7 @@ void generateNewPopulation(){
     cout<<"\tRobots Fitness:"<<endl;
     for (int i = 1; i <= NumRobots; i++){
       cout<<"\t\tRobot "<<i<<": ";
-      for (size_t j = 0; j < 5; j++) {
+      for (size_t j = 0; j < GenMeanFit; j++) {
           cout<<fitness[i][j]<<" ";
       }
       cout<<"avr("<<averageFitness[i]<<")"<<endl;
@@ -576,7 +591,7 @@ void generateNewPopulation(){
   }
 
   for (int i = 1; i <= NumRobots; i++){
-    if(fitness[i][4]<=fitness[bestRobot][4]){
+    if(fitness[i][GenMeanFit-1]<=fitness[bestRobot][GenMeanFit-1]){
       if(ControlCrossing==1){
         for (int j = 0; j < 5; j++){
           chromosome[i][j] = (chromosome[i][j]+chromosome[bestRobot][j])/2;
@@ -665,7 +680,7 @@ void generateNewPopulation(){
   }
   //----- Update average vector fitness -----//
   for (size_t i = 1; i <= NumRobots; i++) {
-    for (size_t j = 1; j < 5; j++) {
+    for (size_t j = 1; j < GenMeanFit; j++) {
       fitness[i][j-1]=fitness[i][j];
     }
   }
@@ -711,12 +726,26 @@ void generateNewPopulation(){
 }
 
 void publishInfo(){
+  //----- Calculate Average Fitness -----//
+  for (size_t i = 1; i <= NumRobots; i++) {
+    averageFitness[i]=0;
+    for (size_t j = 0; j < GenMeanFit; j++) {
+      averageFitness[i]+=fitness[i][j];
+    }
+    if(populationNumber>=GenMeanFit){
+      averageFitness[i]/=GenMeanFit;
+    }else{
+      averageFitness[i]/=populationNumber;
+    }
+  }
+
   ros::Rate loop_rate(10);
   obstacle_avoidance_simulation::RobotInfo infoPub;
   for (size_t i = 1; i <= NumRobots; i++) {
 
     infoPub.RobotNumber.push_back(i);
-    infoPub.Fitness.push_back(fitness[i][4]);
+    infoPub.Fitness.push_back(fitness[i][GenMeanFit-1]);
+    infoPub.AvFitness.push_back(averageFitness[i]);
     infoPub.Generation = populationNumber;
     infoPub.SensorActivation.push_back(chromosome[i][0]);
     infoPub.LinearVelocity.push_back(chromosome[i][1]);

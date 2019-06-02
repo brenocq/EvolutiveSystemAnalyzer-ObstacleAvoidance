@@ -1,6 +1,7 @@
 # Robot Information
 int32[] RobotNumber
 int32[] Fitness
+int32[] AvFitness
 int32 Generation
 # Chromosome Information
 float32[] SensorActivation

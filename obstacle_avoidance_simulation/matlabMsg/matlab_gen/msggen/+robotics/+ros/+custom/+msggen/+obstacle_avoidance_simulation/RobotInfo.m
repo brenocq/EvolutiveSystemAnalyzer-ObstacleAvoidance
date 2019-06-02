@@ -12,7 +12,7 @@ classdef RobotInfo < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = '3b9cacdea89acb04d35b1ba299171898' % The MD5 Checksum of the message definition
+        MD5Checksum = '51f9bf9eb15cf94fbbc0d56fdb89ddbb' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
@@ -23,6 +23,7 @@ classdef RobotInfo < robotics.ros.Message
         Generation
         RobotNumber
         Fitness
+        AvFitness
         SensorActivation
         LinearVelocity
         AngularVelocity
@@ -32,8 +33,8 @@ classdef RobotInfo < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        PropertyList = {'AngularVelocity', 'Fitness', 'Generation', 'LinearVelocity', 'Mutation', 'RobotNumber', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant message properties
-        ROSPropertyList = {'AngularVelocity', 'Fitness', 'Generation', 'LinearVelocity', 'Mutation', 'RobotNumber', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant ROS message properties
+        PropertyList = {'AngularVelocity', 'AvFitness', 'Fitness', 'Generation', 'LinearVelocity', 'Mutation', 'RobotNumber', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant message properties
+        ROSPropertyList = {'AngularVelocity', 'AvFitness', 'Fitness', 'Generation', 'LinearVelocity', 'Mutation', 'RobotNumber', 'RotationTime', 'SensorActivation', 'SensorAngle'} % List of non-constant ROS message properties
     end
     
     methods
@@ -134,6 +135,27 @@ classdef RobotInfo < robotics.ros.Message
             javaArray = obj.JavaMessage.getFitness;
             array = obj.writeJavaArray(fitness, javaArray, 'int32');
             obj.JavaMessage.setFitness(array);
+        end
+        
+        function avfitness = get.AvFitness(obj)
+            %get.AvFitness Get the value for property AvFitness
+            javaArray = obj.JavaMessage.getAvFitness;
+            array = obj.readJavaArray(javaArray, 'int32');
+            avfitness = int32(array);
+        end
+        
+        function set.AvFitness(obj, avfitness)
+            %set.AvFitness Set the value for property AvFitness
+            if ~isvector(avfitness) && isempty(avfitness)
+                % Allow empty [] input
+                avfitness = int32.empty(0,1);
+            end
+            
+            validateattributes(avfitness, {'numeric'}, {'vector'}, 'RobotInfo', 'AvFitness');
+            
+            javaArray = obj.JavaMessage.getAvFitness;
+            array = obj.writeJavaArray(avfitness, javaArray, 'int32');
+            obj.JavaMessage.setAvFitness(array);
         end
         
         function sensoractivation = get.SensorActivation(obj)
@@ -277,6 +299,7 @@ classdef RobotInfo < robotics.ros.Message
             cpObj.Generation = obj.Generation;
             cpObj.RobotNumber = obj.RobotNumber;
             cpObj.Fitness = obj.Fitness;
+            cpObj.AvFitness = obj.AvFitness;
             cpObj.SensorActivation = obj.SensorActivation;
             cpObj.LinearVelocity = obj.LinearVelocity;
             cpObj.AngularVelocity = obj.AngularVelocity;
@@ -290,6 +313,7 @@ classdef RobotInfo < robotics.ros.Message
             obj.Generation = strObj.Generation;
             obj.RobotNumber = strObj.RobotNumber;
             obj.Fitness = strObj.Fitness;
+            obj.AvFitness = strObj.AvFitness;
             obj.SensorActivation = strObj.SensorActivation;
             obj.LinearVelocity = strObj.LinearVelocity;
             obj.AngularVelocity = strObj.AngularVelocity;
@@ -312,6 +336,7 @@ classdef RobotInfo < robotics.ros.Message
             strObj.Generation = obj.Generation;
             strObj.RobotNumber = obj.RobotNumber;
             strObj.Fitness = obj.Fitness;
+            strObj.AvFitness = obj.AvFitness;
             strObj.SensorActivation = obj.SensorActivation;
             strObj.LinearVelocity = obj.LinearVelocity;
             strObj.AngularVelocity = obj.AngularVelocity;
