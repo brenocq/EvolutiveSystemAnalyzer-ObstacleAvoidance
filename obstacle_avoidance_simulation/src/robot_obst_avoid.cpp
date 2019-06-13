@@ -3,6 +3,7 @@
 #include "sensor_msgs/LaserScan.h"
 #include "std_srvs/Empty.h"
 #include "gazebo_msgs/SetModelState.h"
+#include "obstacle_avoidance_simulation/ConfigGenes.h"
 #include "obstacle_avoidance_simulation/RobotInfo.h"
 #include "obstacle_avoidance_simulation/ControlSimulation.h"
 #include "obstacle_avoidance_simulation/EvolutiveSystemConfiguration.h"
@@ -14,7 +15,7 @@ using namespace std;
 
 #define PI 3.14159265
 #define NumRobots 6
-#define PopulationTestTime 120 //set the time in seconds that each population will run
+#define PopulationTestTime 60 //set the time in seconds that each population will run
 #define InitialFitness 0
 #define WalkingPoints 100 // Maximum number of points that a robots can receive in a second (walking with 1m/s)
 #define CollisionPoints -50
@@ -51,6 +52,7 @@ ros::Publisher velocity_publisher[NumRobots+1];//{0, robot1, robot2}
 ros::Publisher robotInfo_publisher;
 ros::Publisher evolutive_config_publisher;
 ros::Publisher control_simulation_publisher;
+ros::Subscriber config_genes_subscriber;
 ros::Subscriber laser_subscriber[NumRobots+1];//{0, robot1, robot2}
 ros::Subscriber evolutive_config_subscriber;
 ros::Subscriber control_simulation_subscriber;
@@ -87,6 +89,7 @@ double degree2radians(double degree);
 void laserCallBack(const sensor_msgs::LaserScan::ConstPtr &msg);
 void evolutiveConfigCallBack(const obstacle_avoidance_simulation::EvolutiveSystemConfiguration::ConstPtr &msg);
 void controlSimulationCallBack(const obstacle_avoidance_simulation::ControlSimulation::ConstPtr &msg);
+void configGenesCallBack(const obstacle_avoidance_simulation::ConfigGenes::ConstPtr &msg);
 void controlLoop();
 
 //----- Evolutive System -----//
@@ -127,6 +130,8 @@ int main(int argc, char **argv) {
     evolutive_config_subscriber = n.subscribe("evolutive_config", 10, evolutiveConfigCallBack);
     control_simulation_publisher = n.advertise<obstacle_avoidance_simulation::ControlSimulation>("/control_simulation",10);
     control_simulation_subscriber = n.subscribe("control_simulation", 10, controlSimulationCallBack);
+
+    config_genes_subscriber = n.subscribe("config_genes", 10, configGenesCallBack);
 
     robotInfo_publisher = n.advertise<obstacle_avoidance_simulation::RobotInfo>("/simulation_info",10);
 
@@ -456,6 +461,35 @@ void controlSimulationCallBack(const obstacle_avoidance_simulation::ControlSimul
   SimulationStatus=msg->SimulationState;
   updateStatus=true;
 }
+void configGenesCallBack(const obstacle_avoidance_simulation::ConfigGenes::ConstPtr &msg){
+  for (int i = 1; i <= 6; i++) {
+    // chromosome[robotNum][ {sensorActivation, vel_linear, vel_angular, time_rotation, sensor_angle} ]
+    if(msg->SensorActivation[i-1]!=-1)
+      chromosome[i][0]=msg->SensorActivation[i-1];
+
+    if(msg->LinearVelocity[i-1]!=-1)
+      chromosome[i][1]=msg->LinearVelocity[i-1];
+
+    if(msg->AngularVelocity[i-1]!=-1)
+      chromosome[i][2]=msg->AngularVelocity[i-1];
+
+    if(msg->RotationTime[i-1]!=-1)
+      chromosome[i][3]=msg->RotationTime[i-1];
+
+    if(msg->SensorAngle[i-1]!=-1)
+      chromosome[i][4]=msg->SensorAngle[i-1];
+  }
+  for (size_t j = 0; j < GenMeanFit; j++) {
+    for (size_t i = 1; i <= 6; i++) {
+      fitness[i][j] = -1;
+    }
+  }
+  populationNumber=msg->Generation;
+
+  cout<<endl<<"------ NEW POPULATION DATA (generation: "<<populationNumber<<") ------"<<endl;
+
+}
+
 //----- Evolutive System -----//
 void initiatePopulation(){
   srand (time(NULL));
@@ -553,11 +587,15 @@ void generateNewPopulation(){
   //----- Calculate Average Fitness -----//
   for (size_t i = 1; i <= NumRobots; i++) {
     averageFitness[i]=0;
+    int aux = 0;// if some of the fitness values are -1, a change happened in all chromosomes ()
     for (size_t j = 0; j < GenMeanFit; j++) {
+      if(fitness[i][j]==-1){
+        aux++;
+      }
       averageFitness[i]+=fitness[i][j];
     }
     if(populationNumber>=GenMeanFit){
-      averageFitness[i]/=GenMeanFit;
+      averageFitness[i]/=(GenMeanFit-aux);
     }else{
       averageFitness[i]/=populationNumber;
     }
@@ -591,7 +629,7 @@ void generateNewPopulation(){
   }
 
   for (int i = 1; i <= NumRobots; i++){
-    if(fitness[i][GenMeanFit-1]<=fitness[bestRobot][GenMeanFit-1]){
+    if(fitness[i][GenMeanFit-1]<fitness[bestRobot][GenMeanFit-1]){
       if(ControlCrossing==1){
         for (int j = 0; j < 5; j++){
           chromosome[i][j] = (chromosome[i][j]+chromosome[bestRobot][j])/2;
@@ -729,11 +767,15 @@ void publishInfo(){
   //----- Calculate Average Fitness -----//
   for (size_t i = 1; i <= NumRobots; i++) {
     averageFitness[i]=0;
+    int aux = 0;// if some of the fitness values are -1, a change happened in all chromosomes ()
     for (size_t j = 0; j < GenMeanFit; j++) {
+      if(fitness[i][j]==-1){
+        aux++;
+      }
       averageFitness[i]+=fitness[i][j];
     }
     if(populationNumber>=GenMeanFit){
-      averageFitness[i]/=GenMeanFit;
+      averageFitness[i]/=(GenMeanFit-aux);
     }else{
       averageFitness[i]/=populationNumber;
     }

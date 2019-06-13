@@ -6,6 +6,7 @@ classdef CustomMsgConsts
     %   Copyright 2014-2019 The MathWorks, Inc.
     
     properties (Constant)
+        obstacle_avoidance_simulation_ConfigGenes = 'obstacle_avoidance_simulation/ConfigGenes'
         obstacle_avoidance_simulation_ControlSimulation = 'obstacle_avoidance_simulation/ControlSimulation'
         obstacle_avoidance_simulation_EvolutiveSystemConfiguration = 'obstacle_avoidance_simulation/EvolutiveSystemConfiguration'
         obstacle_avoidance_simulation_RobotInfo = 'obstacle_avoidance_simulation/RobotInfo'
@@ -18,10 +19,11 @@ classdef CustomMsgConsts
             
             persistent msgList
             if isempty(msgList)
-                msgList = cell(3, 1);
-                msgList{1} = 'obstacle_avoidance_simulation/ControlSimulation';
-                msgList{2} = 'obstacle_avoidance_simulation/EvolutiveSystemConfiguration';
-                msgList{3} = 'obstacle_avoidance_simulation/RobotInfo';
+                msgList = cell(4, 1);
+                msgList{1} = 'obstacle_avoidance_simulation/ConfigGenes';
+                msgList{2} = 'obstacle_avoidance_simulation/ControlSimulation';
+                msgList{3} = 'obstacle_avoidance_simulation/EvolutiveSystemConfiguration';
+                msgList{4} = 'obstacle_avoidance_simulation/RobotInfo';
             end
             
             messageList = msgList;
