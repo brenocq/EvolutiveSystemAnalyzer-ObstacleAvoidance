@@ -28,7 +28,7 @@ Nowadays it is possible to simulate crossing, mutation, neutralization, predatio
 
  <p align="center">
   <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Robot.png" height="300">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/world.png" height="300">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/World.png" height="300">
 </p>
 
 
@@ -60,7 +60,7 @@ The other 5 graphs shows the current value of each gene on each robot per genera
 
  <p align="center">
   <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/AngularVelocityGraph.png" height="150">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SensorAngleGraph.png">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SensorAngleGraph.png"  height="150">
  </p>
 
 ### Analyze Evolution
@@ -78,7 +78,7 @@ It is possible to show/hide each line in the graphs by clicking on its label. Al
 It is possible to show information about only one section of the populations. You can change the first slider to set the minimum limit and change the second slider to set the maximum limit for all graphics.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/MmanageGeneration.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ManageGeneration.png" height="200">
 </p>
 
 In addition, it is possible to return to a previous generation (note: all data after this generation will be lost). To return to a previous generation, you need to change the `Current Generation`. After choosing which generation you want to return, click on the button `Yes`;
@@ -88,19 +88,19 @@ In addition, it is possible to return to a previous generation (note: all data a
 #### Setting Fixed Genes
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGenes.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGenes.png" height="200">
 </p>
 
 It is possible to set a fixed value to some genes. When this occur, these gene in the chromosome of each robot are changed to the desired value. This feature makes possible the evolution of the genes of each robot in different time.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGraphs.png" height="300">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGraphs.png" height="350">
 </p>
 
 #### Selection of Types of Pressure
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Pressure.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Pressure.png" height="200">
 </p>
 
 **Back mutation prevention:** After one gene suffer mutation, it can mutate again only if all other genes in the chromosome also suffered mutation.
@@ -110,7 +110,7 @@ It is possible to set a fixed value to some genes. When this occur, these gene i
 #### Selection of Evolutionary Parameters
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Evolution.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Evolution.png" height="200">
 </p>
 
 **Mutation:** You can set the chance of each gene mutating.
@@ -128,8 +128,8 @@ It is possible to set a fixed value to some genes. When this occur, these gene i
 ### Control Simulation
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation1.png" height="150">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation2.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation1.png" height="200">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation2.png" height="200">
 </p>
 
 It is possible to set the ipv4 of the ROS master before and while the Matlab App is running. Also, the simulation can be controlled with the stop/start switch and pause/run switch.
@@ -139,7 +139,7 @@ It is possible to set the ipv4 of the ROS master before and while the Matlab App
 #### Manage Data
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ManageData.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ManageData.png" height="200">
 </p>
 
 You can also import all the data generated to a txt file or export all data stored in a txt file to the graphs and simulation. With this feature you can continue to evolve the system and analyze that populations later. (The export and import process occurs in the same directory as the `EvolutiveSysAnalyze.mlapp` file is stored).
@@ -147,7 +147,7 @@ You can also import all the data generated to a txt file or export all data stor
 #### Save Graphs
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SaveGraphs.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SaveGraphs.png" height="200">
 </p>
 
 
