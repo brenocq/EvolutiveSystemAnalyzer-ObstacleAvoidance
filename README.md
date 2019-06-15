@@ -67,19 +67,19 @@ The other 5 graphs shows the current value of each gene on each robot per genera
 
 #### Graph visualization
 
-It is possible to show/hide each line in the graphs by clicking on its label. All the graphs will be updated with this new configuration.
-
 <p align="center">
  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/AnalyzeEvolution.png" height="150">
 </p>
 
-#### Manage Generation
+It is possible to show/hide each line in the graphs by clicking on its label. All the graphs will be updated with this new configuration.
 
-It is possible to show information about only one section of the populations. You can change the first slider to set the minimum limit and change the second slider to set the maximum limit for all graphics.
+#### Manage Generation
 
 <p align="center">
  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ManageGeneration.png" height="200">
 </p>
+
+It is possible to show information about only one section of the populations. You can change the first slider to set the minimum limit and change the second slider to set the maximum limit for all graphics.
 
 In addition, it is possible to return to a previous generation (note: all data after this generation will be lost). To return to a previous generation, you need to change the `Current Generation`. After choosing which generation you want to return, click on the button `Yes`;
 
