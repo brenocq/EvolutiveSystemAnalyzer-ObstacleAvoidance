@@ -6,7 +6,7 @@ This project aims to create an interface to monitor the evolution of robots with
 
 This project was made using ROS, Gazebo and Matlab (Robotics System Toolbox and App Designer).
 
-The evolutionary system developed was based on the doctoral thesis of [Professor Eduardo Simões](https://github.com/simoesusp/).
+The evolutionary system developed was based on the PhD work of [Professor Eduardo Simões](https://github.com/simoesusp/).
 
 ## Evolutionary System
 The goal of the evolutionary system is to evolve the simulated robots to walk as fast as possible while they deviate from the obstacles.
@@ -24,75 +24,138 @@ When one sensor is activated the robot rotate to the opposite side. Otherwise, t
 Nowadays it is possible to simulate crossing, mutation, neutralization, predation and back mutation prevention.
 
 ## Simulated Environment
- By the time the robots and the map used were acquired by the package turtlebot3 for gazebo.
+ By the time the the map used was acquired by the package turtlebot3 for gazebo.
 
  <p align="center">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/Turtlebot3.png" height="300">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/InitialSpawnSimulation.png" height="300">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Robot.png" height="300">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/world.png" height="300">
 </p>
+
 
 ## Matlab App
 The Matlab App communicates with the *robot_obst_avoid* ROS node to set the robots proprieties and control the simulation environment.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/MatlabApp1.png" height="800">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/MatlabApp2.png" height="800">
 </p>
 
 ### Graphs
 The **Current Robot Fitness** graph shows the fitness of each robot per generation.
 
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/CurrentRobotFitnessGraph.png">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/CurrentRobotFitnessGraph.png">
 </p>
 
-The **Average Robot Fitness** graph shows the average of the last 5 fitness of each robot per generation (data used to decide which robots will cross).
+The **Average Robot Fitness** graph shows the average of the last N fitness values of each robot per generation (data used to decide which robots will cross).
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/AverageRobotFitnessGraph.png">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/AverageRobotFitnessGraph.png">
 </p>
 
-The other 6 graphs shows the current value of each gene on each robot per generation. (There are two graphs for the sensor angle gene).
+The other 5 graphs shows the current value of each gene on each robot per generation. (There are two graphs for the sensor angle gene).
 <p align="center">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorActivationGraph.png" height="150">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/LinearVelocityGraph.png" height="150">
- <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/RotationTimeGraph.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SensorActivationGraph.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/LinearVelocityGraph.png" height="150">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/RotationTimeGraph.png" height="150">
  </p>
 
  <p align="center">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/AngularVelocityGraph.png" height="150">
-  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/CreateReadMe/Images/SensorAngleGraphs.png">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/AngularVelocityGraph.png" height="150">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SensorAngleGraph.png">
  </p>
 
-### Setting Fixed Genes
+### Analyze Evolution
 
-It is possible to set a fixed value to some genes. When this occur, this gene in the chromosome of each robot changes to the desired value. This makes possible the evolution of the genes of each robot in different time.
+#### Graph visualization
 
-### Selection of Types of Pressure
+It is possible to show/hide each line in the graphs by clicking on its label. All the graphs will be updated with this new configuration.
 
-**Back mutation prevention:** After one gene suffer mutation, it can mutate again only if all other genes also suffered mutation).
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/AnalyzeEvolution.png" height="150">
+</p>
 
-**Predation:** Every X generation, the robot with the least average fitness is killed by the predator (all the genes are set as random).
+#### Manage Generation
 
-### Selection of Types of Diversity
+It is possible to show information about only one section of the populations. You can change the first slider to set the minimum limit and change the second slider to set the maximum limit for all graphics.
 
-**Mutation:** Can set the change of each gene suffer mutation.
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/MmanageGeneration.png" height="150">
+</p>
 
-**Neutralization:** Can set how strong the mutation will be.
+In addition, it is possible to return to a previous generation (note: all data after this generation will be lost). To return to a previous generation, you need to change the `Current Generation`. After choosing which generation you want to return, click on the button `Yes`;
+
+### Simulation Parameters
+
+#### Setting Fixed Genes
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGenes.png" height="150">
+</p>
+
+It is possible to set a fixed value to some genes. When this occur, these gene in the chromosome of each robot are changed to the desired value. This feature makes possible the evolution of the genes of each robot in different time.
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/FixedGraphs.png" height="300">
+</p>
+
+#### Selection of Types of Pressure
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Pressure.png" height="150">
+</p>
+
+**Back mutation prevention:** After one gene suffer mutation, it can mutate again only if all other genes in the chromosome also suffered mutation.
+
+**Predation:** Every N generations, the robot with the least average fitness is killed by the predator (all the genes in the chromosome are set as random).
+
+#### Selection of Evolutionary Parameters
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/Evolution.png" height="150">
+</p>
+
+**Mutation:** You can set the chance of each gene mutating.
+
+**Neutralization:** You can set how strong the mutation will be.
  - 0%: Completely random number
  - 100%: No mutation
 
 **Crossing:** The robot with the best average fitness will cross with the other robots that obtained the current fitness lower than the one of the best robot.
 
-### Simulation Connection
+**Qty. generations in mean:** You can set the number of generations that will be considered when calculating the mean fitness.
+
+**Qty. best robots:** The best robot can be choose randomly between the X robots with best fitness.
+
+### Control Simulation
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation1.png" height="150">
+  <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ControlSimulation2.png" height="150">
+</p>
 
 It is possible to set the ipv4 of the ROS master before and while the Matlab App is running. Also, the simulation can be controlled with the stop/start switch and pause/run switch.
 
-### Save Images and PDFs
+### Data management
+
+#### Manage Data
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/ManageData.png" height="150">
+</p>
+
+You can also import all the data generated to a txt file or export all data stored in a txt file to the graphs and simulation. With this feature you can continue to evolve the system and analyze that populations later. (The export and import process occurs in the same directory as the `EvolutiveSysAnalyze.mlapp` file is stored).
+
+#### Save Graphs
+
+<p align="center">
+ <img src="https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/SaveGraphs.png" height="150">
+</p>
+
 
 There are two ways to save the data. The first one is to select one of the graphs and generate a _png_ image of it. The second one is to save all the data as a PDF file. It is possible to choose the file name and where to save it.
 
 ## How to Install
 
-First, make sure that you have the **turtlebot3 package** for ROS on your ROS workspace and the Matlab Robotics System Toolbox correctly setted to use ROS and Matlab.
+First, make sure that you have the Matlab Robotics System Toolbox correctly setted to use ROS and Matlab.
 
 After this, go to your workspace and clone the ROS package folder in this repository using the lines above on terminal:
 ```
@@ -110,12 +173,13 @@ If everything is fine until here, go to the folder where you store your matlab f
 ```
 $ svn export https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance.git/trunk/MatlabApp
 ```
+All the temp.txt and other data files must be stored in this folder.
 
 Now you have the ROS package and Matlab App installed. It is still necessary to create the new types of messages for ROS on Matlab. To do this, first it is good to delete a folder inside the `obstacle_avoidance_simulation` ROS package.
 ```
 $ rm -r ~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/matlab_gen
 ```
-After this, go to Matlab, write the line above and follow the instruction that will appear:
+After this, go to Matlab, write the line above and follow the instructions that will appear:
 ```
 > rosgenmsg('~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
 ```
@@ -126,8 +190,13 @@ First you need the ROS master to be running. Run on your teminal:
 ```
 $ roscore
 ```
+If you got an error while running `roscore`, go open you _.bashrc_ file and add the line below. Change `XX.XX.XX.XXX` to your ipv4.
+``` txt
+export ROS_MASTER_URI=http://XX.XX.XX.XXX:11311
+export ROS_HOSTNAME=XX.XX.XX.XXX
+```
 
-Now, open another terminal and use roslaunch to initialize the ROS world:
+Now, if your `roscore` command executed correctly, open another terminal and use roslaunch to initialize the ROS world:
 ```
 $ roslaunch obstacle_avoidance_simulation main.launch
 ```
@@ -138,6 +207,6 @@ $ rosrun obstacle_avoidance_simulation robot_obstacle_avoidance_node
 ```
 
 Now everything on the simulation is working. Everything is stopped because them are waiting commands from the Matlab App.
-On matlab, open `EvolutiveSysAnalyze.mlapp` and execute the App (make sure your ipv4 is defined correctly).
+On matlab, open `EvolutiveSysAnalyze.mlapp` and execute the App (make sure your ipv4 is defined correctly before run the App).
 
 Right, now just set the switch stop/start as start and the plots will be updated at the end of each population.
