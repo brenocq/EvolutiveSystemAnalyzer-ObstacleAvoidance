@@ -1,6 +1,6 @@
 # Evolutive System Analyzer (Obstacle Avoidance)
 
-[![Click to watch the video](https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/videoYoutube.png)](https://www.youtube.com/watch?v=hx4qbbTCY30)
+[![Click to watch the video](https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance/blob/master/Images/videoYoutube.png)](https://youtu.be/O4ZdQ0cpk2I)
 
 ## Introduction
 
