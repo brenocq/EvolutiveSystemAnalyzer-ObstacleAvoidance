@@ -162,8 +162,7 @@ First, make sure that you have the Matlab Robotics System Toolbox correctly sett
 After this, go to your workspace and clone the ROS package folder in this repository using the lines above on terminal:
 ```
 $ cd ~/catkin_ws/src
-$ svn export
-https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance.git/trunk/obstacle_avoidance_simulation
+$ svn export https://github.com/Brenocq/EvolutiveSystemAnalyzer-ObstacleAvoidance.git/trunk/obstacle_avoidance_simulation
 ```
 After this, build again your ROS workspace:
 ```
@@ -182,8 +181,25 @@ Now you have the ROS package and Matlab App installed. It is still necessary to 
 $ rm -r ~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/matlab_gen
 ```
 After this, go to Matlab, write the line above and follow the instructions that will appear:
+
+(Make sure the `ROS Toolbox `and `ROS Toolbox interface for ROS Custom Messages` are installed correctly in Matlab)
+
 ```
 > rosgenmsg('~/catkin_ws/src/obstacle_avoidance_simulation/matlabMsg/')
+```
+
+After restarting Matlab and executing `rosmsg list`, check if `obstacle_avoidance_simulation/ConfigGenes` appear. If not, repeat the same process but execute:
+```
+savepath('~')
+```
+This will save the file to the home directory (sometimes this file will not be created without doing so because Matlab does not have access to the original folder). Now move the created file to the correct folder.
+
+
+The last step is to install the turtlebot3 package. If you have not already done so, type in the terminal:
+
+```
+$ cd ~/catkin_ws/src/
+$ git clone https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
 ```
 
 ## How to Run
@@ -199,10 +215,21 @@ export ROS_HOSTNAME=XX.XX.XX.XXX
 ```
 
 Now, if your `roscore` command executed correctly, open another terminal and use roslaunch to initialize the ROS world:
+(You can add the first line to your `.bashrc` so you don't have to run it every time)
 ```
+$ source devel/setup.bash
 $ roslaunch obstacle_avoidance_simulation main.launch
 ```
-After this, go to another terminal and use rosrun to create the ros node:
+I already had problems in this part when I didn't have all dependencies installed, if you also have this problem run:
+```
+$ cd ~/catkin_ws
+$ sudo apt-get install python-rosdep
+$ sudo rosdep init
+$ rosdep update
+$ rosdep install --from-paths src --ignore-src -r -y
+```
+
+If all is well here, go to another terminal and use rosrun to create the ros node:
 ```
 $ rosrun obstacle_avoidance_simulation robot_obstacle_avoidance_node
 
