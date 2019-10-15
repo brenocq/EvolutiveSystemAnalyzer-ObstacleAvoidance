@@ -195,7 +195,7 @@ savepath('~')
 This will save the file to the home directory (sometimes this file will not be created without doing so because Matlab does not have access to the original folder). Now move the created file to the correct folder.
 
 
-The last step is to install the turtlebot3 package. If you have not already done so, type in the terminal:
+The last step is to **install the turtlebot3 package**. If you have not already done so, type in the terminal:
 
 ```
 $ cd ~/catkin_ws/src/
@@ -217,6 +217,7 @@ export ROS_HOSTNAME=XX.XX.XX.XXX
 Now, if your `roscore` command executed correctly, open another terminal and use roslaunch to initialize the ROS world:
 (You can add the first line to your `.bashrc` so you don't have to run it every time)
 ```
+$ cd ~/catkin_ws
 $ source devel/setup.bash
 $ roslaunch obstacle_avoidance_simulation main.launch
 ```
